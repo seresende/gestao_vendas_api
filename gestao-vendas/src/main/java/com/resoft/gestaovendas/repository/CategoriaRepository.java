@@ -7,5 +7,7 @@ import com.resoft.gestaovendas.entity.Categoria;
 
 @Repository
 public interface CategoriaRepository extends JpaRepository<Categoria, Long>{
+	
+	Categoria findByNome(String nome);
 
 }

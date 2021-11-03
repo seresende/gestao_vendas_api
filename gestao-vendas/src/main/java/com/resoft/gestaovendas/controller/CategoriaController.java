@@ -63,6 +63,7 @@ public class CategoriaController {
 	
 	@ApiOperation(value = "Deletar")
 	@DeleteMapping("/{codigo}")
+	//esta anotação é para qando não retornamos nada
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long codigo) {
 		 categoriaService.delete(codigo);

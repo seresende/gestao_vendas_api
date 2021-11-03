@@ -50,5 +50,7 @@ public class CategoriaService {
 		
 	}
 	
+	private void validarCategoriaDuplicada
+	
 	
 }
