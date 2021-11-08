@@ -44,6 +44,19 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 		
 		List<Error> errors = Arrays.asList(new Error(msgUser,msgDeveloper));
 		
+		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+
+	}
+	
+	//tenho que lancar a execessão no handle
+	@ExceptionHandler(RegraNegocioException.class)
+	public ResponseEntity<Object> handleRegraNegocioException(RegraNegocioException ex, WebRequest request){
+		
+		String msgUser = ex.getMessage();
+		String msgDeveloper = ex.getMessage();
+		
+		List<Error> errors = Arrays.asList(new Error(msgUser,msgDeveloper));
+		
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
 
 	}
