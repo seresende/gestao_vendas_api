@@ -32,21 +32,21 @@ public class CategoriaController {
 	@Autowired
 	private CategoriaService categoriaService;
 	
-	@ApiOperation(value = "Listar")
+	@ApiOperation(value = "Listar",nickname = "listarTodas")
 	@GetMapping
 	public List<Categoria> listarTodas(){
 		return categoriaService.listarTodas();
 		
 	}
 	
-	@ApiOperation(value = "Listar por Código")
+	@ApiOperation(value = "Listar por Código",nickname = "buscarPorId")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Optional<Categoria>> buscarPorId(@PathVariable Long codigo){
 		Optional<Categoria> categoria = categoriaService.buscarPorCodigo(codigo);
 		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 	}
 	
-	@ApiOperation(value = "Salvar")
+	@ApiOperation(value = "Salvar",nickname = "salvar")
 	@PostMapping
 	public ResponseEntity<Categoria> salvar(@Valid @RequestBody Categoria categoria){
 		Categoria categoriaSave = categoriaService.salvar(categoria);
@@ -54,14 +54,14 @@ public class CategoriaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSave);
 	}
 	
-	@ApiOperation(value = "Atualizar")
+	@ApiOperation(value = "Atualizar", nickname = "atualizar")
 	@PutMapping("/{codigo}")
 	public ResponseEntity<Categoria> atualizar(@Valid @PathVariable Long codigo, @RequestBody Categoria categoria){
 	
 		return ResponseEntity.ok(categoriaService.Atualizar(codigo, categoria));
 	}
 	
-	@ApiOperation(value = "Deletar")
+	@ApiOperation(value = "Deletar", nickname = "deletar")
 	@DeleteMapping("/{codigo}")
 	//esta anotação é para qando não retornamos nada
 	@ResponseStatus(HttpStatus.NO_CONTENT)

@@ -29,8 +29,8 @@ public class ProdutoService {
 		return produtoRepository.findByCategoriaCodigo(id);
 	}
 	
-	public Optional<Produto> buscaPorcodigo(Long id, Long codigoCategoria){
-		return produtoRepository.buscaPorcodigo(id, codigoCategoria);
+	public Optional<Produto> buscaPorcodigo(Long codigo, Long codigoCategoria){
+		return produtoRepository.buscaPorcodigo(codigo, codigoCategoria);
 	}
 	
 	

@@ -26,14 +26,14 @@ public class ProdutoController {
 
 		
 	
-	@ApiOperation(value = "Listar")
+	@ApiOperation(value = "Listar", nickname = "listarTodas")
 	@GetMapping
 	public List<Produto> listarTodas(@PathVariable Long codigoCategoria) {
 		return produtoService.findByCategoriaCodigo(codigoCategoria);
 
 	}
 
-	@ApiOperation(value = "Listar por Código")
+	@ApiOperation(value = "Listar por Código", nickname = "buscarPorCodigo")
 	@GetMapping("/{codigo}")
 	public ResponseEntity<Optional<Produto>> buscarPorCodigo(@PathVariable Long codigoCategoria, @PathVariable Long codigo) {
 		Optional<Produto> produto = produtoService.buscaPorcodigo(codigo, codigoCategoria);
