@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler {
 
 	private static final String CONSTANT_VALIDATION_NOT_BLANK = "NotBlank";
+	private static final String CONSTANT_VALIDATION_NOT_NULL = "NotNull";
 	private static final String CONSTANT_VALIDATION_LENGTH = "Length";
 
 	// MethodArgumentNotValidException
@@ -47,6 +49,20 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
 
 	}
+	
+	@ExceptionHandler(DataIntegrityViolationException.class)
+	public ResponseEntity<Object> handleDataIntegrityViolationException(DataIntegrityViolationException ex, WebRequest request){
+		
+		String msgUser = "Recurso não encontrado";
+		String msgDeveloper = ex.toString();
+		
+		List<Error> errors = Arrays.asList(new Error(msgUser,msgDeveloper));
+		
+		return handleExceptionInternal(ex, errors, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
+	}
+	
+	
 	
 	//tenho que lancar a execessão no handle
 	@ExceptionHandler(RegraNegocioException.class)
@@ -77,6 +93,10 @@ public class GestaoVendasExceptionHandler extends ResponseEntityExceptionHandler
 	private String tratarMsgUser(FieldError fieldError) {
 
 		if (fieldError.getCode().equals(CONSTANT_VALIDATION_NOT_BLANK)) {
+			return fieldError.getDefaultMessage().concat(" é obrigatório.");
+		}
+		
+		if (fieldError.getCode().equals(CONSTANT_VALIDATION_NOT_NULL)) {
 			return fieldError.getDefaultMessage().concat(" é obrigatório.");
 		}
 
