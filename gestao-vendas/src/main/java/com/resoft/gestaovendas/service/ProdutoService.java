@@ -3,12 +3,16 @@ package com.resoft.gestaovendas.service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import com.resoft.gestaovendas.entity.Produto;
 import com.resoft.gestaovendas.exception.RegraNegocioException;
 import com.resoft.gestaovendas.repository.ProdutoRepository;
+
+import ch.qos.logback.core.joran.util.beans.BeanUtil;
 
 @Service
 public class ProdutoService {
@@ -38,14 +42,23 @@ public class ProdutoService {
 	}
 	
 	
-	public void delete(Long id){
-		produtoRepository.deleteById(id);
+	public void delete(Long codCategoria,Long codigo){
+		validarCatDoProdutoExiste(codCategoria);
+		Produto prodDelete = validarProdutoExiste(codigo,codCategoria);
+		produtoRepository.delete(prodDelete);
 	}
 	
-	public Produto salvar(Produto produto) {
-		validarCatDoProdutoExiste(produto.getCategoria().getCodigo());
+	public Produto salvar(Long codCategoria,Produto produto) {
+		validarCatDoProdutoExiste(codCategoria);
 		validarProdutoDuplicado(produto);
 		return produtoRepository.save(produto);
+	}
+	
+	public Produto atualizar(Long codCategoria,Long codigo, Produto produto) {
+		Produto prodSalvar = validarProdutoExiste(codigo,codCategoria);
+	    validarCatDoProdutoExiste(codCategoria);
+		BeanUtils.copyProperties(produto, prodSalvar,"codigo");
+		return produtoRepository.save(prodSalvar);
 	}
 
    
@@ -58,6 +71,17 @@ public class ProdutoService {
 		if(categoriaService.buscarPorCodigo(codCategoria).isEmpty()) {
 			throw new RegraNegocioException(String.format("A categoria de código %s informada não existe no cadastro!", codCategoria));
 		}
+		
+	}
+	
+	
+	private Produto validarProdutoExiste(Long codigo,Long codCategoria) {
+		
+	 Optional<Produto> produto = buscaPorcodigo(codigo, codCategoria);
+	 if (produto.isEmpty()){
+		 throw new EmptyResultDataAccessException(1);
+	 }
+	 return produto.get();
 		
 	}
 	

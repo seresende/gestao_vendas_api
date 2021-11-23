@@ -46,7 +46,7 @@ public class CategoriaController {
 		return categoria.isPresent() ? ResponseEntity.ok(categoria) : ResponseEntity.notFound().build();
 	}
 	
-	@ApiOperation(value = "Salvar",nickname = "salvar")
+	@ApiOperation(value = "Salvar",nickname = "salvarCategoria")
 	@PostMapping
 	public ResponseEntity<Categoria> salvar(@Valid @RequestBody Categoria categoria){
 		Categoria categoriaSave = categoriaService.salvar(categoria);
@@ -54,14 +54,14 @@ public class CategoriaController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(categoriaSave);
 	}
 	
-	@ApiOperation(value = "Atualizar", nickname = "atualizar")
+	@ApiOperation(value = "Atualizar", nickname = "atualizarCategoria")
 	@PutMapping("/{codigo}")
-	public ResponseEntity<Categoria> atualizar(@Valid @PathVariable Long codigo, @RequestBody Categoria categoria){
+	public ResponseEntity<Categoria> atualizar(@PathVariable Long codigo, @Valid @RequestBody Categoria categoria){
 	
 		return ResponseEntity.ok(categoriaService.Atualizar(codigo, categoria));
 	}
 	
-	@ApiOperation(value = "Deletar", nickname = "deletar")
+	@ApiOperation(value = "Deletar", nickname = "delete")
 	@DeleteMapping("/{codigo}")
 	//esta anotação é para qando não retornamos nada
 	@ResponseStatus(HttpStatus.NO_CONTENT)
